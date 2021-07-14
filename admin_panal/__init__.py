@@ -4,7 +4,7 @@ from flask import Flask
 from .models import db
 
 #blueprints
-from .controllers.helloworld import helloworld_route
+from .controllers.admin import admin_route
 
 
 def create_app():
@@ -14,5 +14,5 @@ def create_app():
         db.init_app(app)
         db.create_all()
 
-    app.register_blueprint(helloworld_route)
+    app.register_blueprint(admin_route)
     return app

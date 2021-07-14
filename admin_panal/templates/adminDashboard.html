@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard : Admin {% endblock %}
+
+{% block content %}
+
+<nav class="navbar">
+    <a class="navbar-brand textColor" href="#">KIDS PASSION</a>
+</nav> 
+
+<div class="">
+  <div class="row">
+    <div class="col-3">
+      
+     
+        <li><a class="collapsible-header waves-effect arrow-r"><i class="fas fa-chevron-right"></i>Course
+          management<i class="fas fa-angle-down rotate-icon"></i></a>
+          <div class="collapsible-body">
+            <ul>
+              <li><a href="/addCourse" class="waves-effect">Add Course</a>
+              </li>
+              <li><a href="/getCourse" class="waves-effect">Get Course</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li><a class="collapsible-header waves-effect arrow-r"><i class="fas fa-hand-point-up"></i>
+            Teacher management<i class="fas fa-angle-down rotate-icon"></i></a>
+          <div class="collapsible-body">
+            <ul>
+              <li><a href="/addTeacher" class="waves-effect">Add Teacher</a>
+              </li>
+              <li><a href="/getTeacher" class="waves-effect">Get Teacher</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li><a class="collapsible-header waves-effect arrow-r"><i class="fas fa-eye"></i> Batch management<i class="fas fa-angle-down rotate-icon"></i></a>
+          <div class="collapsible-body">
+            <ul>
+              <li><a href="#" class="waves-effect">add batch</a>
+              </li>
+              <li><a href="#" class="waves-effect">view batch</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      
+    </div>
+    <div class="col-9">
+      {% block dashContent %}
+      
+      {%endblock%}
+    </div>
+    
+  </div>
+</div>
+
+    
+{% endblock %}
+
