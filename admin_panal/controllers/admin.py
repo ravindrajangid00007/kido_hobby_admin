@@ -27,3 +27,6 @@ def adminLogin():
 def addTeacher():
     if request.method == 'GET':
         return render_template('addTeacher.html')
+
+
+
