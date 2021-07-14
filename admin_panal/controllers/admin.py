@@ -28,5 +28,8 @@ def addTeacher():
     if request.method == 'GET':
         return render_template('addTeacher.html')
 
+@admin_route.route('/addCourse')
+def addCourse():
+    return render_template('addCourse.html')
 
 
