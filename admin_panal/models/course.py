@@ -1,4 +1,4 @@
-from admin_panal.models import db
+from ..models import db
 
 class Course(db.Model):
      id = db.Column(db.Integer, primary_key=True)
