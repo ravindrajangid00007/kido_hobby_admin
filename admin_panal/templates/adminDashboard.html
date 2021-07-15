@@ -5,26 +5,27 @@
 {% block content %}
 
 <nav class="navbar">
-  <a class="navbar-brand textColor" href="#">KIDS PASSION</a>
+  <a href="/dashboard" class="navbar-brand textColor">&emsp;KIDSPASSION</a>
+  <span>Hello {{g.user}}!&emsp;</span>
+  <button class="btn btn-outline-primary"><a href="/logout" class="nav-link">Logout</a> </button>
+
 </nav> 
 <!--sidebar content-->
 <div>
   <div class="row">
-    <div class="col-3">
+    <nav class=" nav flex-column col-lg-3 left-navbar"> 
       <div class="accordion" id="accordionExample">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="background:bisque;">
               Course management
             </button>
           </h2>
           <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-              <ul>
-                <li><a href="/addCourse" class="waves-effect">Add Course</a>
-                </li>
-                <li><a href="/getCourse" class="waves-effect">Get Course</a>
-                </li>
+              <ul class="list-group list-group-flush">
+                <a href="/addCourse" class="list-group-item" >Add Course</a>
+                <a href="/getCourse" class="list-group-item" >Get Course</a>
               </ul>  
             </div>
           </div>
@@ -32,43 +33,39 @@
         
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingTwo">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="background: bisque;">
               Teacher management
             </button>
           </h2>
           <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-              <ul>
-                <li><a href="/addTeacher" class="waves-effect">Add Teacher</a>
-                </li>
-                <li><a href="/getTeacher" class="waves-effect">Get Teacher</a>
-                </li>
+              <ul class="list-group list-group-flush">
+                <a href="/addTeacher" class="list-group-item" >Add Teacher</a>
+                <a href="/getTeacher" class="list-group-item" >Get Teacher</a>
               </ul>  
             </div>
           </div>
         </div>
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingThree">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="background: bisque;">
               Batch management
             </button>
           </h2>
           <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-              <ul>
-                <li><a href="#" class="waves-effect">add batch</a>
-                </li>
-                <li><a href="#" class="waves-effect">view batch</a>
-                </li>
+              <ul class="list-group list-group-flush">
+                <a href="/addBatch" class="list-group-item" >Add Batch</a>
+                <a href="/getBatch" class="list-group-item" >Get Batch</a>
               </ul>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <!--end of sidebar -->
+    </nav>
+    <!--end of sidebar-->
     <!--Dashboard Content-->
-    <div class="col-9">
+    <div class="col-lg-9">
       {% block dashContent %}
 
       {%endblock%}
