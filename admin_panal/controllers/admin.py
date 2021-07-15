@@ -28,8 +28,12 @@ def addTeacher():
     if request.method == 'GET':
         return render_template('addTeacher.html')
 
-@admin_route.route('/addCourse')
+@admin_route.route('/addCourse',methods=["GET","POST"])
 def addCourse():
+    if (request.method == "POST"):
+        data=request.form
+        print(data)
+        return render_template('addCourse.html')
     return render_template('addCourse.html')
 
 
