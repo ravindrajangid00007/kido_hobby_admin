@@ -6,8 +6,22 @@
 <form class="needs-validation" novalidate method="POST">
   <!--section for personal details-->
   <section>
+    <!--this for loop will show error or success messages-->
+    {%for message in get_flashed_messages() %}
+      {%if message == "success"%}
+        <div class="alert alert-success" role="alert">
+          Successfully Added
+        </div>
+      {%else%}
+        <div class="alert alert-danger" role="alert">
+          {{message}}
+        </div>
+      {%endif%}
+    {%endfor%}
+    <!--.................................................-->
+
     <h3>Personal Details</h3>
-    <div class="row">
+    <div class="row g-1">
       <div class="col-md-3 mb-3">
           <label for="inputFirstName" class="form-label">First Name</label>
           <input type="text" class="form-control" name="firstname" id="inputFirstName" placeholder="First Name" required>
