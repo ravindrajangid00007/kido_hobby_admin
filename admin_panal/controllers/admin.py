@@ -1,9 +1,13 @@
+from datetime import datetime
 import functools
 from flask import Flask , request ,Blueprint ,render_template, flash, session, url_for, g
 from werkzeug.utils import redirect
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from ..models import db
+from ..models.course import Course
 admin_route = Blueprint('admin' , __name__)
+
+
 
 # Login feature
 
@@ -25,6 +29,7 @@ def adminLogin():
         
         session.clear()
         session['user_id'] = 'ADMIN'
+        print(url_for('admin.adminDashboard'))
         return redirect(url_for('admin.adminDashboard'))
 
 #Logout feature
@@ -75,10 +80,42 @@ def addTeacher():
         return render_template('addTeacher.html')
 
 @admin_route.route('/addCourse',methods=["GET","POST"])
+@login_required
 def addCourse():
     if (request.method == "POST"):
         data=request.form
         print(data)
+        weekday=""
+        for i in data:
+           if i in ['sun','mon','tue','wed','thur','fri','sat']:
+              weekday=weekday+i+" "
+        weekday=weekday[0:len(weekday)-1]
+        broucher=request.files['broucher'].read() 
+        thumbnailimage=request.files['thumbnailimage'].read() 
+        videoimage1=request.files['videoimage1'].read() 
+        videoimage2=request.files['videoimage2'].read() 
+        course=Course(name=data['name'],              
+                      author=data['author'],
+                      category=data['category'],
+                      discription=data['discription'],
+                      broucher=broucher,
+                      coursevideolink=data['coursevideolink'],
+                      thumbnailimage=thumbnailimage,
+                      videoimage1=videoimage1,
+                      videoimage2=videoimage2,
+                      noofclasses=data['noofclasses'],
+                      weekday=weekday,
+                      duration=data['duration'],
+                      coursetype=data['coursetype'],
+                      minage=int(data['minage']),
+                      maxage=int(data['maxage']),
+                      price=float(data['price']),
+                      state=data['state'],
+                      adminname=g.user,
+                      adddate=datetime.utcnow(),
+                      )
+        db.session.add(course)
+        db.session.commit()
         return render_template('addCourse.html')
     return render_template('addCourse.html')
 
