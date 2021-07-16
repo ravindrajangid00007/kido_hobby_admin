@@ -2,6 +2,7 @@
 
 {% block dashContent %}
 <h2>Add course</h2>
+<<<<<<< HEAD
 <form method="POST" action="/addCourse" enctype="multipart/form-data" class="needs-validation" novalidate>
    <div class="col-md-5 mb-4">
       <label for="name" class="form-label">Name/Title<span style="color: red;">*</span></label> 
@@ -109,6 +110,100 @@
    <p>week days of class</p>
    <div class="form-check form-check-inline  col-md-1 mb-5">
       <input class="form-check-input" value="sun" type="checkbox" id="sun" name="sun">
+=======
+ <form method="POST" action="/addCourse" class="needs-validation" novalidate >
+   
+  <div class="col-md-5 mb-4">
+     <label for="coursename" class="form-label">Course Name<span style="color: red;">*</span></label> 
+  <input required type="text" class="form-control" id="coursename" placeholder="course name" name="coursename">
+   <div class="valid-feedback">
+      Looks good!
+    </div>
+    <div class="invalid-feedback">
+      Please choose a Course Name.
+    </div>
+  </div>
+  <div class=" col-md-5 mb-4">
+    <label for="coursecode" class="form-label">Course Code<span style="color: red;">*</span></label>
+    <input required type="text" class="form-control" id="courscode" placeholder="cours code" name="courscode">
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+    <div class="invalid-feedback">
+      Please choose a Course Code.
+    </div>
+  </div>
+  <div class="col-md-5 mb-4">
+    <label for="coursediscription" class="form-label">Short Discription About Course<span style="color: red;">*</span></label>
+    <textarea required class="form-control" id="coursediscription"  name="coursediscription" rows="3"></textarea>
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+    <div class="invalid-feedback">
+      Please Fill short course discription.
+    </div>
+  </div>
+  <div class="col-md-5 mb-4">
+    <label for="coursebroucher" class="form-label">Course Broucher document<span style="color: red;">*</span></label>
+    <input required type="file" class="form-control" id="coursebroucher" name="coursebroucher">
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+    <div class="invalid-feedback">
+      Please upload a Broucher document.
+    </div>
+  </div>
+
+  <div class="col-md-5 mb-4">
+    <label for="coursevideolink" class="form-label">Link Of Video About Your Course<span style="color: red;">*</span> </label>
+    <input required type="url" pattern="https?://.+" title="Include http://" class="form-control" id="coursevideolink" placeholder="https://examplevideo.com" name="coursevideolink">
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+    <div class="invalid-feedback">
+      Please choose a vaild video link.
+    </div>
+  </div>
+
+  <div class="col-md-5 mb-4">
+    <label for="thumbnailimageurl" class="form-label">Link Of Thumbnail Image<span style="color: red;">*</span> </label>
+    <input required type="url" class="form-control" id="thumbnailimageurl" placeholder="https://thumbnailimage.com" name="thumbnailimageurl">
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+    <div class="invalid-feedback">
+      Please choose a vaild image link.
+    </div> 
+  </div>
+  <p>Images About Your Video<span style="color: red;">*</span></p>
+  <div class="col-md-5 mb-6">
+    <input type="url" required class="form-control" id="imagelink1" placeholder="https://courselimage.com" name="imagelink1">
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+    <div class="invalid-feedback">
+      Please choose a vaild image link.
+    </div>
+  </div>
+  <br/>
+  <div class="col-md-5 mb-6">
+    <input type="url" class="form-control" id="imagelink2" placeholder="https://courselimage.com" name="imagelink2">
+  </div>
+  <br/>
+  <div class=" col-md-5 mb-4">
+    <label for="noofclasses" class="form-label">Total No. Of Classes<span style="color: red;">*</span></label>
+    <input type="text" required class="form-control" pattern="[0-9].{0,}" id="noofclasses" placeholder="No. Of Classes " name="noofclasses">
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+    <div class="invalid-feedback">
+      Please fill a no. of Classes.
+    </div>
+  </div>
+  <p>week days of class</p>     
+  <div class="form-check form-check-inline  col-md-1 mb-5">
+    <input class="form-check-input" value="sun" type="checkbox" id="sun" name="sun">
+>>>>>>> 59ebe69f2e4e756c41dab969bbc00b8d458c81a2
       <label class="form-check-label" for="sun">Sun</label>
    </div>
    <div class="form-check form-check-inline col-md-1 mb-5">

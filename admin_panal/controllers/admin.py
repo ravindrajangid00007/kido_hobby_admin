@@ -1,10 +1,17 @@
 from datetime import datetime
 import functools
+from os import error
 from flask import Flask , request ,Blueprint ,render_template, flash, session, url_for, g
+from sqlalchemy.orm import query
 from werkzeug.utils import redirect
 from werkzeug.security import check_password_hash, generate_password_hash
 from ..models import db
+<<<<<<< HEAD
 from ..models.course import Course
+=======
+from ..models.teachers import Teacher
+
+>>>>>>> 59ebe69f2e4e756c41dab969bbc00b8d458c81a2
 admin_route = Blueprint('admin' , __name__)
 
 
@@ -37,7 +44,6 @@ def adminLogin():
 @admin_route.route('/logout')
 def logout():
     session.clear()
-    print(g.user)
     return redirect(url_for('admin.adminLogin'))
 
 
@@ -78,6 +84,37 @@ def adminDashboard():
 def addTeacher():
     if request.method == 'GET':
         return render_template('addTeacher.html')
+
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        
+        same_username = Teacher.query.filter_by(username = data['username'].upper())
+        same_email = Teacher.query.filter_by(email = data['email'].upper())
+        error = None
+        
+        if same_username.first() != None:
+            error = "Username already exists"
+        elif same_email.first() != None:
+            error = "Email already exists"
+
+        if error is None:
+            data['password'] = generate_password_hash(data['password'], method='pbkdf2:sha256', salt_length=16)
+            data['username'] = data['username'].upper()
+            data['email'] = data['email'].upper()
+
+            newTeacher = Teacher(**data)
+            try:
+
+                db.session.add(newTeacher)
+                db.session.commit()
+                flash("success")
+                return redirect(url_for("admin.addTeacher"))
+            except:
+                return "Bad Request",400
+        
+        flash(error)
+        return redirect(url_for("admin.addTeacher"))    
+    
 
 @admin_route.route('/addCourse',methods=["GET","POST"])
 @login_required
