@@ -3,7 +3,6 @@ from ..models import db
 
 
 class Teacher(db.Model):
-
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(db.String(20), nullable=False)
     lastname = db.Column(db.String(20))

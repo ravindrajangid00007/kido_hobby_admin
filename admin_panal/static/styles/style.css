@@ -1,0 +1,70 @@
+.login-form{
+  max-width: 30rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  justify-content: center;
+  height: 100vh;
+  background: rgba(85, 83, 81, 0.726);
+}
+
+#formContent {
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  background: rgba(233, 223, 223, 0.863);
+  padding: 30px;
+  width: 50%;
+  position: relative;
+  padding: 0px;
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.navbar{
+  background-color:rgba(85, 83, 81, 0.158);
+
+}
+.left-navbar{
+  height:100vh;
+  background: rgba(85, 83, 81, 0.158);
+}
+
+.list-group-item{
+  background: rgba(85, 83, 81, 0.158);
+}
+.accordion-collapse{
+  background: rgba(85, 83, 81, 0.158);
+} 
+.textColor{
+  color: black;
+}
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  }
+  
+  ::-webkit-scrollbar-track {
+  border: 0px ;
+  border-radius: 0px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+  background: yellowgreen;  
+  border-radius: 0px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+  background: #88ba1c;  
+  }
+
+  .admincontent{
+    height:100vh;
+    overflow:scroll;
+    border: hidden;
+  }

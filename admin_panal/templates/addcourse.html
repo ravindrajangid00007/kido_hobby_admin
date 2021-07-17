@@ -1,8 +1,29 @@
 {% extends 'adminDashboard.html' %}
-
+x
 {% block dashContent %}
 <h2>Add course</h2>
-<form method="POST" action="/addCourse" enctype="multipart/form-data" class="needs-validation" novalidate>
+   <!--this for loop will show error or success messages-->
+   <div class="admincontent">
+   {%for message in get_flashed_messages() %}
+   {%if message == "success"%}
+     <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Congratulation!</strong> Course Added Successfully
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+   {%else%}
+     <div class="alert alert-danger" role="alert">
+       {{message}}
+     </div>
+     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>error!</strong> something went wrong
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+   {%endif%}
+ {%endfor%}
+ <!--.................................................-->
+
+
+ <form method="POST" action="/addCourse" id="courseform" name="courseform" enctype="multipart/form-data" class="needs-validation upload-form" novalidate>
    <div class="col-md-5 mb-4">
       <label for="name" class="form-label">Name/Title<span style="color: red;">*</span></label> 
       <input required type="text" class="form-control" id="name" placeholder="course name" name="name">
@@ -47,8 +68,8 @@
       </div>
    </div>
    <div class="col-md-5 mb-4">
-      <label for="broucher" class="form-label">Broucher document<span style="color: red;">*</span></label>
-      <input required type="file" class="form-control"  accept="application/pdf,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="broucher" name="broucher">
+      <label for="broucher" class="form-label ">Broucher document (Max 20MB)<span style="color: red;">*</span></label>
+      <input required  type="file" class="form-control doc" data-max-size="20" accept="application/pdf,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="broucher" name="broucher">
       <div class="valid-feedback">
          Looks good!
       </div>
@@ -56,29 +77,22 @@
          Please upload a Broucher document.
       </div>
    </div>
+
    <div class="col-md-5 mb-4">
-      <label for="coursevideolink" class="form-label">Link Of Video About Your Course<span style="color: red;">*</span> </label>
-      <input required type="url" pattern="https?://.+" title="Include http://" class="form-control" id="coursevideolink" placeholder="https://examplevideo.com" name="coursevideolink">
+      <label for="video" class="form-label">Video About Your Course (Max 100MB)<span style="color: red;">*</span> </label>
+      <input type="file"  class="form-control video" data-max-size="100" name="video" id="video" required multiple="multiple" accept="video/*" />
       <div class="valid-feedback">
          Looks good!
       </div>
       <div class="invalid-feedback">
-         Please choose a vaild video link.
+         Please choose a vaild video file.
       </div>
    </div>
+
+
    <div class="col-md-5 mb-4">
-      <label for="thumbnailimage" class="form-label">Thumbnail Image<span style="color: red;">*</span> </label>
-      <input type="file" class="form-control" name="thumbnailimage" id="thumbnailimage" required multiple="multiple" accept="image/png,image/gif,image/jpeg,image/*" />
-      <div class="valid-feedback">
-         Looks good!
-      </div>
-      <div class="invalid-feedback">
-         Please choose a vaild image.
-      </div>
-   </div>
-   <p>Images About Your Video<span style="color: red;">*</span></p>
-   <div class="col-md-5 mb-4">
-      <input type="file" class="form-control" name="videoimage1" id="videoimage1" required multiple="multiple" accept="image/png,image/gif,image/jpeg,image/*" />
+      <label for="thumbnailimage" class="form-label">Thumbnail Image (Max 10MB)<span style="color: red;">*</span> </label>
+      <input type="file" class="form-control img" data-max-size="10" name="thumbnailimage" id="thumbnailimage" required multiple="multiple" accept="image/png,image/gif,image/jpeg,image/*" />    
       <div class="valid-feedback">
          Looks good!
       </div>
@@ -86,8 +100,9 @@
          Please choose a vaild image.
       </div>
    </div>
+   <p>Images About Your Video (Max 10MB Each)<span style="color: red;">*</span></p>
    <div class="col-md-5 mb-4">
-      <input type="file" class="form-control" name="videoimage2" id="videoimage2" required multiple="multiple" accept="image/png,image/gif,image/jpeg,image/*" />
+      <input type="file" class="form-control img" data-max-size="10" name="videoimage1" id="videoimage1" required multiple="multiple" accept="image/png,image/gif,image/jpeg,image/*" /> 
       <div class="valid-feedback">
          Looks good!
       </div>
@@ -95,7 +110,16 @@
          Please choose a vaild image.
       </div>
    </div>
-   <br/>
+   <div class="col-md-5 mb-4">
+      <input type="file" class="form-control img" data-max-size="10" name="videoimage2" id="videoimage2" required multiple="multiple" accept="image/png,image/gif,image/jpeg,image/*" />  
+      <div class="valid-feedback">
+         Looks good!
+      </div>
+      <div class="invalid-feedback">
+         Please choose a vaild image.
+      </div>
+   </div>
+
    <div class=" col-md-5 mb-4">
       <label for="noofclasses" class="form-label">Total No. Of Classes<span style="color: red;">*</span></label>
       <input type="text" required class="form-control" pattern="[0-9].{0,}" id="noofclasses" placeholder="No. Of Classes " name="noofclasses">
@@ -108,36 +132,36 @@
    </div>
    <p>week days of class</p>
    <div class="form-check form-check-inline  col-md-1 mb-5">
-      <input class="form-check-input" value="sun" type="checkbox" id="sun" name="sun">
+      <input class="form-check-input" value="sun" type="checkbox" id="sun" name="weekday">
       <label class="form-check-label" for="sun">Sun</label>
    </div>
    <div class="form-check form-check-inline col-md-1 mb-5">
-      <input class="form-check-input" value="mon" type="checkbox" id="mon" name="mon" checked>
+      <input class="form-check-input" value="mon" type="checkbox" id="mon" name="weekday" checked>
       <label class="form-check-label" for="mon">Mon</label>
    </div>
    <div class="form-check form-check-inline col-md-1 mb-5">
-      <input class="form-check-input" value="tue" type="checkbox" id="tue" name="tue" checked>
+      <input class="form-check-input" value="tue" type="checkbox" id="tue" name="weekday" checked>
       <label class="form-check-label" for="tue">Tue</label>
    </div>
    <div class="form-check form-check-inline col-md-1 mb-5">
-      <input class="form-check-input" value="wed" type="checkbox" id="wed" name="wed" checked>
+      <input class="form-check-input" value="wed" type="checkbox" id="wed" name="weekday" checked>
       <label class="form-check-label" for="wed">Wed</label>
    </div>
    <div class="form-check form-check-inline col-md-1 mb-5">
-      <input class="form-check-input" value="thur" type="checkbox" id="thur" name="thur">
+      <input class="form-check-input" value="thur" type="checkbox" id="thur" name="weekday">
       <label class="form-check-label" for="thur">Thur</label>
    </div>
    <div class="form-check form-check-inline col-md-1 mb-5">
-      <input class="form-check-input" value="fri" type="checkbox" id="fri" name="fri">
+      <input class="form-check-input" value="fri" type="checkbox" id="fri" name="weekday">
       <label class="form-check-label" for="fri">Fri</label>
    </div>
    <div class="form-check form-check-inline col-md-1 mb-5">
-      <input class="form-check-input" value="sat" type="checkbox" id="sat" name="sat">
+      <input class="form-check-input" value="sat" type="checkbox" id="sat" name="weekday">
       <label class="form-check-label" for="sat">Sat</label>
    </div>
    <div class=" col-md-5 mb-4">
       <label for="duration" class="form-label">Duration<span style="color: red;">*</span>  day/week/month/year</label>
-      <input required type="text" pattern="[1-9\-]{1}+[A-Za-z]{3,6}" class="form-control" id="duration" placeholder="Example : 5-day  4-week  2-month  1-year" name="duration">
+      <input required type="text" pattern="[1-9]{1}[\-a-zA-Z]{3,6}" class="form-control" id="duration" placeholder="Example : 5-day  4-week  2-month  1-year" name="duration">
       <div class="valid-feedback">
          Looks good!
       </div>
@@ -184,11 +208,91 @@
       <input class="form-check-input" value="disable" type="radio" name="state" id="disable" >
       <label class="form-check-label" for="disable">Disabled</label>
    </div>
-   <div class="col-6">
+   <!-- <div class="col-6">
       <button class="btn btn-primary" type="submit">Submit form</button>
-   </div>
-   </div>
+   </div>  -->
+   <button type="button" onclick="fun()" id="previewbutton" aria-required="true" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+      submit
+   </button>
+
+
+
+
+
+   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel"><span style="font-size: larger;color: rgb(223, 30, 30);"> Are you sure you want to submit ?</span></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+
+          <div class="modal-body" id="preview">
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">Name :</span><span id="previewname"                         style="margin-left: 10px; font-weight:400;font-size:x-large;"      ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">Author</span>: <span id="previewauthor"                     style="margin-left: 10px; font-weight:400;font-size:x-large;"          ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">Category</span><span id="previewcategory"                   style="margin-left: 10px; font-weight:400;font-size:x-large;"           ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">discription</span> <span id="previewdiscription"            style="margin-left: 10px; font-weight:400;font-size:x-large;"                 ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">broucher</span> <span id="previewbroucher"                  style="margin-left: 10px; font-weight:400;font-size:x-large;"                  ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">video </span>: <span id="previewvideo"  style="margin-left: 10px; font-weight:400;font-size:x-large;"                        ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">thumbnailimage:</span>: <span id="previewthumbnailimage"    style="margin-left: 10px; font-weight:400;font-size:x-large;"                     ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">videoimage1</span>: <span id="previewvideoimage1"           style="margin-left: 10px; font-weight:400;font-size:x-large;"               ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">videoimage2 </span>: <span id="previewvideoimage2"          style="margin-left: 10px; font-weight:400;font-size:x-large;"                ></span>
+            <br/>
+            <br/>   
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">noofclasses</span> : <span id="previewnoofclasses"          style="margin-left: 10px; font-weight:400;font-size:x-large;"             ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">weekday</span> : <span id="previewweekday"                  style="margin-left: 10px; font-weight:400;font-size:x-large;"                     ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">duration</span>: <span id="previewduration"                 style="margin-left: 10px; font-weight:400;font-size:x-large;"                        ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">coursetype</span>: <span id="previewcoursetype"             style="margin-left: 10px; font-weight:400;font-size:x-large;"                     ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">minage </span>: <span id="previewminage"                    style="margin-left: 10px; font-weight:400;font-size:x-large;"               ></span>
+            <br/>               
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">maxage </span>: <span id="previewmaxage"                    style="margin-left: 10px; font-weight:400;font-size:x-large;"                                ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">price</span> : <span id="previewprice"                      style="margin-left: 10px; font-weight:400;font-size:x-large;"                    ></span>
+            <br/>
+            <br/>
+            <span style="font-size: x-large;font-weight:600;margin-right: 30px;">state</span> : <span id="previewstate"                      style="margin-left: 10px; font-weight:400;font-size:x-large;"                         ></span>
+            <br/>
+            <br/>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="close" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" id="fsub" class="btn btn-primary">final submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </form>
+
+   </div>
 <script>
   (function () {
   'use strict'
@@ -209,5 +313,132 @@
       }, false)
     })
 })();
+
+
+
+
+$(document).ready(function(){
+   maxfilesize=20*1024*1024;
+   $(".doc").change(function(){
+      filesize = this.files[0].size;
+
+      if (filesize > maxfilesize){
+         this.setCustomValidity("you can only upload file under 20 MB");
+          this.reportValidity();
+          this.value=""
+      }
+      else{
+              this.setCustomValidity("");
+      }
+   })
+}
+)
+$(document).ready(function(){
+   maxfilesize=100*1024*1024;
+   $(".video").change(function(){
+      filesize = this.files[0].size;
+
+      if (filesize > maxfilesize){
+         this.setCustomValidity("you can only upload file under 100 MB");
+          this.reportValidity();
+          this.value=""
+      }
+      else{
+              this.setCustomValidity("");
+      }
+   })
+}
+)
+$(document).ready(function(){
+   maxfilesize=10*1024*1024;
+   $(".img").change(function(){
+      filesize = this.files[0].size;
+
+      if (filesize > maxfilesize){
+         this.setCustomValidity("you can only upload file under 10 MB");
+          this.reportValidity();
+          this.value=""
+      }
+      else{
+              this.setCustomValidity("");
+      }
+   })
+}
+)
+
+$(function () {
+    $('form').submit(function () {
+          $("#fsub").change(
+            StartBlockPage()
+         )
+    });
+});
+
+
+function StartBlockPage() {
+    
+    document.getElementById("close").click();
+
+    var block_body = $("#body");
+    $(block_body).block({
+        message: '<button class="btn btn-primary" type="button" disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...</button>',
+        overlayCSS: {
+            backgroundColor: '#FFF',
+            opacity: 0.6,
+            cursor: 'wait',
+            height: '100%',
+            background: 'cover'
+            
+        },
+        css: {
+            border: 0,
+            padding: 0,
+            backgroundColor: 'transparent',
+            
+        }
+    });
+}
+
+function CloseBlockPage() {
+    var block_body = $("#body");
+    $(block_body).unblock();
+}
+
+
+
+
+function fun(){
+
+   var inputs = document.querySelectorAll("input[type=checkbox]");  
+   var k="" 
+   for(var i = 0; i < inputs.length; i++){ 
+                  console.log(inputs[i].checked)  
+                 if (inputs[i].checked){
+                     var a = inputs[i];
+                     k=k+a.value+" ";
+                 }   
+        }   
+   document.getElementById("previewname").innerHTML=document.forms["courseform"]["name"].value;
+   document.getElementById("previewauthor").innerHTML=document.forms["courseform"]["author"].value;
+   document.getElementById("previewcategory").innerHTML=document.forms["courseform"]["category"].value;
+   document.getElementById("previewdiscription").innerHTML=document.forms["courseform"]["discription"].value;
+   document.getElementById("previewbroucher").innerHTML=document.forms["courseform"]["broucher"].value;
+   document.getElementById("previewvideo").innerHTML=document.forms["courseform"]["video"].value;
+   document.getElementById("previewthumbnailimage").innerHTML=document.forms["courseform"]["thumbnailimage"].value;
+   document.getElementById("previewvideoimage1").innerHTML=document.forms["courseform"]["videoimage1"].value;
+   document.getElementById("previewvideoimage2").innerHTML=document.forms["courseform"]["videoimage2"].value;
+   document.getElementById("previewnoofclasses").innerHTML=document.forms["courseform"]["noofclasses"].value;
+   document.getElementById("previewweekday").innerHTML=k;
+   document.getElementById("previewduration").innerHTML=document.forms["courseform"]["duration"].value;
+   document.getElementById("previewcoursetype").innerHTML=document.forms["courseform"]["coursetype"].value;
+   document.getElementById("previewminage").innerHTML=document.forms["courseform"]["minage"].value;
+   document.getElementById("previewmaxage").innerHTML=document.forms["courseform"]["maxage"].value;
+   document.getElementById("previewprice").innerHTML=document.forms["courseform"]["price"].value;
+   document.getElementById("previewstate").innerHTML=document.forms["courseform"]["state"].value;
+
+   
+
+}
 </script>
+
 {% endblock %}

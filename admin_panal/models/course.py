@@ -7,7 +7,7 @@ class Course(db.Model):
      category=db.Column(db.String(30), nullable=False)
      discription=db.Column(db.Text,nullable=False)
      broucher = db.Column(db.LargeBinary,nullable=False)
-     coursevideolink = db.Column(db.String(120), nullable=False)
+     video = db.Column(db.LargeBinary, nullable=False)
      thumbnailimage= db.Column(db.LargeBinary, nullable=False)
      videoimage1=db.Column(db.LargeBinary, nullable=False)
      videoimage2=db.Column(db.LargeBinary,nullable=False)

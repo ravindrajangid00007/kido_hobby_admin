@@ -6,12 +6,9 @@ from sqlalchemy.orm import query
 from werkzeug.utils import redirect
 from werkzeug.security import check_password_hash, generate_password_hash
 from ..models import db
-<<<<<<< HEAD
 from ..models.course import Course
-=======
 from ..models.teachers import Teacher
 
->>>>>>> 59ebe69f2e4e756c41dab969bbc00b8d458c81a2
 admin_route = Blueprint('admin' , __name__)
 
 
@@ -120,40 +117,53 @@ def addTeacher():
 @login_required
 def addCourse():
     if (request.method == "POST"):
-        data=request.form
-        print(data)
-        weekday=""
-        for i in data:
-           if i in ['sun','mon','tue','wed','thur','fri','sat']:
-              weekday=weekday+i+" "
-        weekday=weekday[0:len(weekday)-1]
-        broucher=request.files['broucher'].read() 
-        thumbnailimage=request.files['thumbnailimage'].read() 
-        videoimage1=request.files['videoimage1'].read() 
-        videoimage2=request.files['videoimage2'].read() 
-        course=Course(name=data['name'],              
-                      author=data['author'],
-                      category=data['category'],
-                      discription=data['discription'],
-                      broucher=broucher,
-                      coursevideolink=data['coursevideolink'],
-                      thumbnailimage=thumbnailimage,
-                      videoimage1=videoimage1,
-                      videoimage2=videoimage2,
-                      noofclasses=data['noofclasses'],
-                      weekday=weekday,
-                      duration=data['duration'],
-                      coursetype=data['coursetype'],
-                      minage=int(data['minage']),
-                      maxage=int(data['maxage']),
-                      price=float(data['price']),
-                      state=data['state'],
-                      adminname=g.user,
-                      adddate=datetime.utcnow(),
-                      )
-        db.session.add(course)
-        db.session.commit()
-        return render_template('addCourse.html')
+        try:
+                data=request.form.to_dict() 
+                print(data)
+                weekday=" ".join(request.form.getlist('weekday'))
+                broucher=request.files['broucher'].read() 
+                video=request.files['video'].read() 
+                thumbnailimage=request.files['thumbnailimage'].read() 
+                videoimage1=request.files['videoimage1'].read() 
+                videoimage2=request.files['videoimage2'].read() 
+                course=Course(name=data['name'],              
+                            author=data['author'],
+                            category=data['category'],
+                            discription=data['discription'],
+                            broucher=broucher,
+                            video=video,
+                            thumbnailimage=thumbnailimage,
+                            videoimage1=videoimage1,
+                            videoimage2=videoimage2,
+                            noofclasses=data['noofclasses'],
+                            weekday=weekday,
+                            duration=data['duration'],
+                            coursetype=data['coursetype'],
+                            minage=int(data['minage']),
+                            maxage=int(data['maxage']),
+                            price=float(data['price']),
+                            state=data['state'],
+                            adminname=g.user,
+                            adddate=datetime.utcnow(),
+                            )
+                db.session.add(course)
+                db.session.commit()
+                flash("success")
+                return redirect(url_for("admin.addCourse"))
+        except Exception as e:
+                print(e)
+                flash("error")
+                return redirect(url_for("admin.addCourse"))
     return render_template('addCourse.html')
+
+
+
+
+@admin_route.route('/getCourse',methods=['GET','POST'])
+@login_required
+def getCourse():
+    if (request.method=='POST'):
+        print("post")
+    return render_template('getCourse.html')
 
 
