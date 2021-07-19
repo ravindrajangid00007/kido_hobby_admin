@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Ui Buttons {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<h3>Fill Teacher details</h3>
+
+<form class="needs-validation" novalidate method="POST">
+  <!--section for personal details-->
+  <section>
+    <!--this for loop will show error or success messages-->
+    <span class="mb-0 text-muted">
+        {% if msg %}
+            {{ msg | safe }}
+        {% else %}
+            Add credentials
+        {% endif %} 
+    </span><!--.................................................-->
+
+
+    <form role="form" method="post" action="">
+
+        {{ form.hidden_tag() }}                    
+
+        <div class="input-group mb-3">
+            {{ form.Firstname(placeholder="Firstname", class="form-control") }}
+        </div>
+        
+        <div class="input-group mb-3">
+            {{ form.Lastname(placeholder="Lastname", class="form-control") }}
+        </div>
+        
+        <div class="input-group mb-3">
+            {{ form.email(placeholder="Email", class="form-control", type="email") }}
+        </div>
+        
+        <div class="input-group mb-4">
+            {{ form.password(placeholder="Password", class="form-control", type="password") }}
+        </div>
+        
+        <div class="input-group mb-4">
+            {{ form.age(placeholder="age", class="form-control") }}
+        </div>
+
+        {{form.skills.label}}
+        <div class="input-group mb-4">
+            {{ form.skills(class="form-control",size="1") }}
+        </div>
+        
+        <div class="input-group mb-4">
+            {{ form.skills(class="form-control",size="1") }}
+        </div>
+        
+
+        <div class="form-group text-left">
+            <div class="checkbox checkbox-fill d-inline" >
+                {{form.is_teacher(checked="")}}
+                <label for="is_teacher" class="cr">Teacher</label>
+            </div>
+        </div>
+
+        <button type="submit" name="add" class="btn btn-primary shadow-2 mb-4">add</button>
+
+    </form>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

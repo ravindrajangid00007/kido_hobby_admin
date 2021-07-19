@@ -1,0 +1,47 @@
+.login-form{
+  max-width: 30rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  justify-content: center;
+  height: 100vh;
+  background: bisque;
+}
+
+#formContent {
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  background: #fbeddc;
+  padding: 30px;
+  width: 50%;
+  position: relative;
+  padding: 0px;
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.navbar{
+  background-color:bisque
+
+}
+.left-navbar{
+  height: 100vh;
+  background: bisque;
+}
+
+.list-group-item{
+  background: bisque;
+}
+.accordion-collapse{
+  background: bisque;
+} 
+.textColor{
+  color: black;
+}
+

@@ -1,11 +1,17 @@
 import functools
-from os import error
+from os import error, name
 from flask import Flask , request ,Blueprint ,render_template, flash, session, url_for, g
 from sqlalchemy.orm import query
 from werkzeug.utils import redirect
 from werkzeug.security import check_password_hash, generate_password_hash
 from ..models import db
-from ..models.teachers import Teacher
+from ..models.users import Users
+from ..models.batches import Batches
+from ..models.courses import Courses
+from ..models import *
+from ..forms.loginForm import LoginForm
+from ..forms.teacherForm import addTeacherForm
+
 
 admin_route = Blueprint('admin' , __name__)
 
@@ -13,23 +19,28 @@ admin_route = Blueprint('admin' , __name__)
 
 @admin_route.route('/' , methods=['GET','POST'])
 def adminLogin():
+    form = LoginForm()
+
     if request.method == 'GET':
-        return render_template('adminLogin.html')
-    
+        return render_template('accounts/adminLogin.html', form=form)
+        
     if request.method == 'POST':
-        email = request.form['email']
+
+        username = request.form['username']
         password = request.form['password']
+
+        # Locate user
+        user = Users.query.filter_by(email=username).first()
+           
+        if user and check_password_hash(user['password'], password) and form.validate_on_submit():        
+            session.clear()
+            #storing user_id in the session
+            #it will be used to check if admin is logged in
+            session['user_id'] = user.id
+            return redirect(url_for('admin.adminDashboard'))
         
-        if email.upper() != 'ADMIN@ADMIN.COM':
-            flash("incorrect email!")
-            return render_template('adminLogin.html')
-        if password != 'hello@admin':
-            flash("incorrect password!")
-            return render_template('adminLogin.html')
-        
-        session.clear()
-        session['user_id'] = 'ADMIN'
-        return redirect(url_for('admin.adminDashboard'))
+        return render_template( 'accounts/adminLogin.html', msg='Wrong user or password', form=form)
+
 
 #Logout feature
 
@@ -44,7 +55,6 @@ def logout():
 @admin_route.before_app_request
 def load_logged_in_user():
     user = session.get('user_id')
-
     if user is None:
         g.user = None
     else:
@@ -68,45 +78,38 @@ def login_required(view):
 @admin_route.route('/dashboard')
 @login_required
 def adminDashboard():
-    return render_template('adminDashboard.html')
+    return render_template('home/adminDashboard.html')
 
 
 @admin_route.route('/addTeacher' , methods=['GET','POST'])
 @login_required
 def addTeacher():
+    teacherForm = addTeacherForm()
+
     if request.method == 'GET':
-        return render_template('addTeacher.html')
+        return render_template('home/addTeacher.html',form=teacherForm)
 
     if request.method == 'POST':
+        
         data = request.form.to_dict()
         
-        same_username = Teacher.query.filter_by(username = data['username'].upper())
-        same_email = Teacher.query.filter_by(email = data['email'].upper())
-        error = None
-        
-        if same_username.first() != None:
-            error = "Username already exists"
-        elif same_email.first() != None:
-            error = "Email already exists"
+            
 
-        if error is None:
-            data['password'] = generate_password_hash(data['password'], method='pbkdf2:sha256', salt_length=16)
-            data['username'] = data['username'].upper()
-            data['email'] = data['email'].upper()
 
-            newTeacher = Teacher(**data)
-            try:
+@admin_route.route('/getTeacher/',methods=['GET','POST'])
+@login_required
+def getTeacher():
+    teachers = []
+    if request.method =='POST':
+        name = request.form
+        search = "%{}%".format(name['searchValue'])
+        teachers = Users.query.filter(Users.firstname.like(search) and Users.is_teacher==1).all()
+        if not teachers:
+           flash("No Teacher Found") 
+        return render_template('getTeacher.html',teachers=teachers)
+    return render_template('getTeacher.html',teachers=teachers)
 
-                db.session.add(newTeacher)
-                db.session.commit()
-                flash("success")
-                return redirect(url_for("admin.addTeacher"))
-            except:
-                return "Bad Request",400
-        
-        flash(error)
-        return redirect(url_for("admin.addTeacher"))    
-    
+
 
 @admin_route.route('/addCourse',methods=["GET","POST"])
 @login_required
