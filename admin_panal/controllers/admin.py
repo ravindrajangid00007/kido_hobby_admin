@@ -8,7 +8,11 @@ from ..models import db
 from ..models.users import Users
 from ..models.batches import Batches
 from ..models.courses import Courses
-from ..models import *
+from ..models.skills import Skills
+from ..models.users_batches import users_batches
+from ..models.users_skills import users_skills
+from..models.batches_courses import batches_courses
+
 from ..forms.loginForm import LoginForm
 from ..forms.teacherForm import addTeacherForm
 
@@ -32,7 +36,7 @@ def adminLogin():
         # Locate user
         user = Users.query.filter_by(email=username).first()
            
-        if user and check_password_hash(user['password'], password) and form.validate_on_submit():        
+        if user and check_password_hash(user.password, password) and form.validate_on_submit():        
             session.clear()
             #storing user_id in the session
             #it will be used to check if admin is logged in
@@ -83,6 +87,7 @@ def adminDashboard():
 
 @admin_route.route('/addTeacher' , methods=['GET','POST'])
 @login_required
+
 def addTeacher():
     teacherForm = addTeacherForm()
 
