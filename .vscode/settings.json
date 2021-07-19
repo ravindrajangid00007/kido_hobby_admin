@@ -1,6 +1,7 @@
 {
     "launch": {
 
+
         "configurations": [],
         "compounds": []
     },
@@ -9,4 +10,5 @@
         "pylint_flask_sqlalchemy",
         "pylint_flask",                 
     ],
+    "terminal.integrated.automationShell.windows": "",
 }

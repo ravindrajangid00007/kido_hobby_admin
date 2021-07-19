@@ -1,5 +1,8 @@
 from ..models import db
 from datetime import datetime
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo
 class Course(db.Model):
      id = db.Column(db.Integer, primary_key=True)
      name = db.Column(db.String(30), nullable=False)
@@ -27,3 +30,16 @@ class Course(db.Model):
 
      def __repr__(self):
          return f"Course('{self.id}','{self.name}','{self.price}','{self.state}')"
+
+
+
+class addcourse(FlaskForm):
+    course_name = StringField('Course Name',
+                           validators=[DataRequired(), Length(min=2, max=20)])
+    
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password',
+                                     validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Add Course')
